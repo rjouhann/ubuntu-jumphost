@@ -12,7 +12,7 @@
 # echo "secret" > /home/$USER/.secret
 
 # Add in $USER's crontab so script start at boot
-# @reboot sleep 900 && /home/$USER/ubuntu_init.sh > /home/ubuntu_init.log 2>&1
+# @reboot sleep 60 && /home/$USER/ubuntu_init.sh > /home/ubuntu_init.log 2>&1
 
 
 ##### CONFIGURATION
@@ -36,7 +36,7 @@ cd /home/$USER
 sudo apt update
 
 sudo docker info
-if [ $? == 0 ];then
+if [ $? != 0 ];then
     echo -e "\nInstall Docker"
     sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -56,8 +56,8 @@ fi
 echo "Install Netplan (if no already installed)"
 sudo apt install netplan.io -y
 
-ip addr | grep "$internal"
-if [ $? == 0 ];then
+ip addr | grep "$internal_ip"
+if [ $? != 0 ];then
     echo "Configure Netplan"
     sudo bash -c "echo \"network:
   version: 2
@@ -76,7 +76,7 @@ if [ $? == 0 ];then
     sudo cat /etc/netplan/01-netcfg.yaml
 
     sudo netplan generate
-    sudo netplan try
+    sudo netplan apply
     echo
     ip addr
 fi
