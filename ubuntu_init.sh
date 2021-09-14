@@ -99,14 +99,14 @@ sudo docker rm $(docker ps -a -q)
 sudo docker run --restart=always --name=juice-shop -dit -p 3000:3000 bkimminich/juice-shop
 
 # Firefox
-sudo docker run -d --name=firefox -p 5800:5800 -v /etc/hosts:/etc/hosts -v /docker/appdata/firefox:/config:rw --shm-size 2g jlesage/firefox
+sudo docker run --restart=always --name=firefox -dit -p 5800:5800 -v /etc/hosts:/etc/hosts -v /docker/appdata/firefox:/config:rw --shm-size 2g jlesage/firefox
 
 # Syslog server
 sudo docker run --restart=always --name=syslog -dit -e SYSLOG_USERNAME=admin -e SYSLOG_PASSWORD="$password" -p 5801:80 -p 514:514/udp pbertera/syslogserver
 
 ### Visual Studio Code https://github.com/cdr/code-server
 sudo docker pull codercom/code-server:latest
-sudo docker run --restart=always --name=code-server -d -p 5802:8080 -e PASSWORD="$password" -v "/home/$USER:/home/coder/project" codercom/code-server:latest
+sudo docker run --restart=always --name=code-server -dit -p 5802:8080 -e PASSWORD="$password" -v "/home/$USER:/home/coder/project" codercom/code-server:latest
 sudo docker exec code-server sh -c "sudo apt-get update"
 sudo docker exec code-server sh -c "sudo apt-get install -y python3 python3-dev python3-pip python3-jmespath"
 sudo docker exec code-server sh -c "pip3 install ansible"
