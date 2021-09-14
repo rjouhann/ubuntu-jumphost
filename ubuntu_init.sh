@@ -34,6 +34,7 @@ SECONDS=0
 cd /home/$USER
 
 sudo apt update
+sudo apt upgrade -y
 
 sudo docker info
 if [ $? != 0 ];then
@@ -81,15 +82,11 @@ if [ $? != 0 ];then
     ip addr
 fi
 
-echo -e "\nInstall Apache Benchmark, Git, jq, unzip (if no already installed)"
-sudo sudo sudo apt install apache2-utils -y
-apt install git git-lfs -y
-apt install jq -y
-sudo apt install unzip -y
+echo -e "\nInstall Apache Benchmark, git, jq (if no already installed)"
+sudo apt install apache2-utils git jq -y
 
 echo -e "\nInstall Ansible and sshpass (if no already installed)"
-sudo apt install ansible -y
-sudo apt install sshpass -y
+sudo apt install ansible sshpass -y
 ansible-playbook --version
 
 # Cleanup any existing docker
@@ -105,7 +102,7 @@ sudo docker run --restart=always --name=juice-shop -dit -p 3000:3000 bkimminich/
 sudo docker run -d --name=firefox -p 5800:5800 -v /etc/hosts:/etc/hosts -v /docker/appdata/firefox:/config:rw --shm-size 2g jlesage/firefox
 
 # Syslog server
-sudo docker run --restart=always --name=syslog -dit -e SYSLOG_USERNAME=admin -e SYSLOG_PASSWORD=$password -p 5801:80 -p 514:514/udp pbertera/syslogserver
+sudo docker run --restart=always --name=syslog -dit -e SYSLOG_USERNAME=admin -e SYSLOG_PASSWORD="$password" -p 5801:80 -p 514:514/udp pbertera/syslogserver
 
 ### Visual Studio Code https://github.com/cdr/code-server
 sudo docker pull codercom/code-server:latest
@@ -135,7 +132,7 @@ sudo docker exec code-server code-server --install-extension /tmp/$(ls *vsix)
 sudo docker exec code-server sh -c "rm -f /tmp/*vsix"
 rm *.vsix
 
-echo '{"folders":[{"path":".."}],"files.exclude":{"**/.*":true,"**/settings_vscode.json":true}}' > /home/$USER/settings_vscode.json
+echo '{"folders":[{"path":".."}],"files.exclude":{"**/.*":true,"**/ubuntu_init.sh":true,"**/.*":true,"**/locust":true,"**/.*":true,"**/settings_vscode.json":true,"**/.*":true}}' > /home/$USER/settings_vscode.json
 cat /home/$USER/settings_vscode.json | jq .
 
 sudo docker exec code-server code-server --install-extension dawhite.mustache
@@ -148,7 +145,7 @@ sudo docker restart code-server
 
 ## Locust/Traffic Generator: https://locust.io
 mkdir /home/$USER/locust
-cat <<EOT >> /home/$USER/locust/locustfile.py
+cat <<EOT > /home/$USER/locust/locustfile.py
 import time
 from locust import HttpUser, task, between
 
@@ -162,7 +159,7 @@ class QuickstartUser(HttpUser):
         self.client.get("/", verify=False)
 EOT
 
-sudo docker run --restart=unless-stopped --name=locust -dit -p 5803:8089 -v /home/$USER/locust:/mnt/locust locustio/locust -f /mnt/locust/locustfile.py --host http://10.1.10.100:3000
+sudo docker run --restart=unless-stopped --name=locust -dit -p 5803:8089 -v /home/$USER/locust:/mnt/locust locustio/locust -f /mnt/locust/locustfile.py --host http://10.1.10.100
 
 sudo docker ps
 
