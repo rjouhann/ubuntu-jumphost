@@ -11,8 +11,8 @@
 # Set password
 # echo "secret" > /home/$USER/.secret
 
-# Add in $USER's crontab so script start at boot
-# @reboot sleep 60 && /home/$USER/ubuntu_init.sh > /home/$USER/ubuntu_init.log 2>&1
+# Install
+# /home/$USER/ubuntu_init.sh > /home/$USER/ubuntu_init.log 2>&1
 
 
 ##### CONFIGURATION
