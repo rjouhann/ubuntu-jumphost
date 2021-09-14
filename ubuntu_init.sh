@@ -12,7 +12,7 @@
 # echo "secret" > /home/$USER/.secret
 
 # Install
-# /home/$USER/ubuntu_init.sh > /home/$USER/ubuntu_init.log 2>&1
+# /home/$USER/ubuntu_init.sh
 
 
 ##### CONFIGURATION
