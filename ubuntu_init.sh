@@ -91,18 +91,20 @@ ansible-playbook --version
 
 # Cleanup any existing docker
 sudo docker ps
+sudo docker images
 sudo docker stop $(docker ps -q)
 sudo docker kill $(docker ps -q)
 sudo docker rm $(docker ps -a -q)
 
+
 # Juice Shop - https://owasp.org/www-project-juice-shop/
-sudo docker run --restart=always --name=juice-shop -dit -p 3000:3000 bkimminich/juice-shop
+sudo docker run --restart=always --name=juice-shop -dit -p 3000:3000 bkimminich/juice-shop:latest
 
 # Firefox
-sudo docker run --restart=always --name=firefox -dit -p 5800:5800 -v /etc/hosts:/etc/hosts -v /docker/appdata/firefox:/config:rw --shm-size 2g jlesage/firefox
+sudo docker run --restart=always --name=firefox -dit -p 5800:5800 -v /etc/hosts:/etc/hosts -v /docker/appdata/firefox:/config:rw --shm-size 2g jlesage/firefox:latest
 
 # Syslog server
-sudo docker run --restart=always --name=syslog -dit -e SYSLOG_USERNAME=admin -e SYSLOG_PASSWORD="$password" -p 5801:80 -p 514:514/udp pbertera/syslogserver
+sudo docker run --restart=always --name=syslog -dit -e SYSLOG_USERNAME=admin -e SYSLOG_PASSWORD="$password" -p 5801:80 -p 514:514/udp pbertera/syslogserver:latest
 
 ### Visual Studio Code https://github.com/cdr/code-server
 sudo docker pull codercom/code-server:latest
@@ -135,6 +137,9 @@ rm *.vsix
 echo '{"folders":[{"path":".."}],"files.exclude":{"**/.*":true,"**/ubuntu_init.sh":true,"**/.*":true,"**/locust":true,"**/.*":true,"**/settings_vscode.json":true,"**/.*":true}}' > /home/$USER/settings_vscode.json
 cat /home/$USER/settings_vscode.json | jq .
 
+
+
+
 sudo docker exec code-server code-server --install-extension dawhite.mustache
 sudo docker exec code-server code-server --install-extension humao.rest-client
 sudo docker exec code-server code-server --install-extension vscoss.vscode-ansible
@@ -159,8 +164,9 @@ class QuickstartUser(HttpUser):
         self.client.get("/", verify=False)
 EOT
 
-sudo docker run --restart=unless-stopped --name=locust -dit -p 5803:8089 -v /home/$USER/locust:/mnt/locust locustio/locust -f /mnt/locust/locustfile.py --host http://10.1.10.100
+sudo docker run --restart=unless-stopped --name=locust -dit -p 5803:8089 -v /home/$USER/locust:/mnt/locust locustio/locust:latest -f /mnt/locust/locustfile.py --host http://10.1.10.100
 
+sudo docker images
 sudo docker ps
 
 # total script execution time
