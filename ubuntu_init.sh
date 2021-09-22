@@ -96,6 +96,8 @@ sudo docker stop $(docker ps -q)
 sudo docker kill $(docker ps -q)
 sudo docker rm $(docker ps -a -q)
 
+# https://github.com/f5devcentral/f5-demo-httpd
+sudo docker run --restart=always --name=f5-demo-httpd -dit -p 8080:80 f5devcentral/f5-demo-httpd:nginx
 
 # Juice Shop - https://owasp.org/www-project-juice-shop/
 sudo docker run --restart=always --name=juice-shop -dit -p 3000:3000 bkimminich/juice-shop:latest
