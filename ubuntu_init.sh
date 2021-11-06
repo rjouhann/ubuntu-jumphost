@@ -103,7 +103,7 @@ sudo docker run --restart=always --name=f5-demo-httpd -dit -p 8080:80 f5devcentr
 sudo docker run --restart=always --name=juice-shop -dit -p 3000:3000 bkimminich/juice-shop:latest
 
 # Firefox
-sudo docker run --restart=always --name=firefox -dit -p 5800:5800 -v /etc/hosts:/etc/hosts -v /docker/appdata/firefox:/config:rw --shm-size 2g jlesage/firefox:latest
+sudo docker run --restart=always --name=firefox -dit -p 5800:5800 -v /home/$USER:/config/$USER -v /etc/hosts:/etc/hosts -v /docker/appdata/firefox:/config:rw --shm-size 2g jlesage/firefox:latest
 
 # Syslog server
 sudo docker run --restart=always --name=syslog -dit -e SYSLOG_USERNAME=admin -e SYSLOG_PASSWORD="$password" -p 5801:80 -p 514:514/udp pbertera/syslogserver:latest
