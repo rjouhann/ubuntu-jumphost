@@ -97,20 +97,20 @@ sudo docker kill $(docker ps -q)
 sudo docker rm $(docker ps -a -q)
 
 # https://github.com/f5devcentral/f5-demo-httpd
-sudo docker run --restart=always --name=f5-demo-httpd -dit -p 8080:80 f5devcentral/f5-demo-httpd:nginx
+sudo docker run --restart=always --name=f5-demo-httpd -e TZ=America/Los_Angeles -dit -p 8080:80 f5devcentral/f5-demo-httpd:nginx
 
 # Juice Shop - https://owasp.org/www-project-juice-shop/
-sudo docker run --restart=always --name=juice-shop -dit -p 3000:3000 bkimminich/juice-shop:latest
+sudo docker run --restart=always --name=juice-shop -e TZ=America/Los_Angeles -dit -p 3000:3000 bkimminich/juice-shop:latest
 
 # Firefox
-sudo docker run --restart=always --name=firefox -dit -p 5800:5800 -v /home/$USER:/config/$USER -v /etc/hosts:/etc/hosts -v /docker/appdata/firefox:/config:rw --shm-size 2g jlesage/firefox:latest
+sudo docker run --restart=always --name=firefox -e TZ=America/Los_Angeles -dit -p 5800:5800 -e DISPLAY_WIDTH=1800 -e DISPLAY_HEIGHT=900 -v /home/$USER:/config/$USER -v /etc/hosts:/etc/hosts -v /docker/appdata/firefox:/config:rw --shm-size 2g jlesage/firefox:latest
 
 # Syslog server
-sudo docker run --restart=always --name=syslog -dit -e SYSLOG_USERNAME=admin -e SYSLOG_PASSWORD="$password" -p 5801:80 -p 514:514/udp pbertera/syslogserver:latest
+sudo docker run --restart=always --name=syslog -e TZ=America/Los_Angeles -dit -e SYSLOG_USERNAME=admin -e SYSLOG_PASSWORD="$password" -p 5801:80 -p 514:514/udp pbertera/syslogserver:latest
 
 ### Visual Studio Code https://github.com/cdr/code-server
 sudo docker pull codercom/code-server:latest
-sudo docker run --restart=always --name=code-server -dit -p 5802:8080 -e PASSWORD="$password" -v "/home/$USER:/home/coder/project" codercom/code-server:latest
+sudo docker run --restart=always --name=code-server -e TZ=America/Los_Angeles -dit -p 5802:8080 -e PASSWORD="$password" -v "/home/$USER:/home/coder/project" codercom/code-server:latest
 sudo docker exec code-server sh -c "sudo apt-get update"
 sudo docker exec code-server sh -c "sudo apt-get install -y python3 python3-dev python3-pip python3-jmespath"
 sudo docker exec code-server sh -c "pip3 install ansible"
@@ -140,8 +140,6 @@ echo '{"folders":[{"path":".."}],"files.exclude":{"**/.*":true,"**/ubuntu_init.s
 cat /home/$USER/settings_vscode.json | jq .
 
 
-
-
 sudo docker exec code-server code-server --install-extension dawhite.mustache
 sudo docker exec code-server code-server --install-extension humao.rest-client
 sudo docker exec code-server code-server --install-extension vscoss.vscode-ansible
@@ -166,7 +164,7 @@ class QuickstartUser(HttpUser):
         self.client.get("/", verify=False)
 EOT
 
-sudo docker run --restart=unless-stopped --name=locust -dit -p 5803:8089 -v /home/$USER/locust:/mnt/locust locustio/locust:latest -f /mnt/locust/locustfile.py --host http://10.1.10.100
+sudo docker run --restart=unless-stopped --name=locust -dit -p 5803:8089 -e TZ=America/Los_Angeles -v /home/$USER/locust:/mnt/locust locustio/locust:latest -f /mnt/locust/locustfile.py --host http://10.1.10.100
 
 sudo docker images
 sudo docker ps
