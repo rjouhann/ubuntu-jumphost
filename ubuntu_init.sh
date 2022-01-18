@@ -97,7 +97,8 @@ sudo docker kill $(docker ps -q)
 sudo docker rm $(docker ps -a -q)
 
 # https://github.com/f5devcentral/f5-demo-httpd
-sudo docker run --restart=always --name=f5-demo-httpd -e TZ=America/Los_Angeles -dit -p 8080:80 f5devcentral/f5-demo-httpd:nginx
+sudo docker run --restart=always --name=f5-demo-httpd-1 -e TZ=America/Los_Angeles -e F5DEMO_NODENAME='App1' -e F5DEMO_COLOR=0194d2 -dit -p 8080:80 f5devcentral/f5-demo-httpd:nginx
+sudo docker run --restart=always --name=f5-demo-httpd-2 -e TZ=America/Los_Angeles -e F5DEMO_NODENAME='App2' -e F5DEMO_COLOR=a0bf37 -dit -p 8081:80 f5devcentral/f5-demo-httpd:nginx
 
 # Juice Shop - https://owasp.org/www-project-juice-shop/
 sudo docker run --restart=always --name=juice-shop -e TZ=America/Los_Angeles -dit -p 3000:3000 bkimminich/juice-shop:latest
