@@ -109,6 +109,9 @@ sudo docker run --restart=always --name=firefox -e TZ=America/Los_Angeles -dit -
 # Syslog server
 sudo docker run --restart=always --name=syslog -e TZ=America/Los_Angeles -dit -e SYSLOG_USERNAME=admin -e SYSLOG_PASSWORD="$password" -p 5801:80 -p 514:514/udp pbertera/syslogserver:latest
 
+# Zap https://www.zaproxy.org/docs/docker/webswing/
+sudo docker run --restart=always --name=zap -e TZ=America/Los_Angeles -dit -p 8091:8080 -p 8090:8090 owasp/zap2docker-stable zap-webswing.sh
+
 ### Visual Studio Code https://github.com/cdr/code-server
 sudo docker pull codercom/code-server:latest
 sudo docker run --restart=always --name=code-server -e TZ=America/Los_Angeles -dit -p 5802:8080 -e PASSWORD="$password" -v "/home/$USER:/home/coder/project" codercom/code-server:latest
