@@ -6,6 +6,6 @@ services:
     ports:
       - "1812:1812/udp"
     volumes:
-      - "$RADIUS_HOME/clients.conf:/etc/raddb/clients.conf"
-      - "$RADIUS_HOME/authorize:/etc/raddb/mods-config/files/authorize"
+      - "./clients.conf:/etc/raddb/clients.conf"
+      - "./authorize:/etc/raddb/mods-config/files/authorize"
     restart: always
