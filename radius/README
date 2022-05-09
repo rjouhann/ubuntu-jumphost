@@ -1,5 +1,8 @@
-Install Instructions
-####################
+# Install Instructions
+
+1. Clone the repo
+
+2. Start Radius server (you can change default radius server password and radius users in the authorize and clients.conf files)
 
 # cd radius
 # docker-compose up -d
